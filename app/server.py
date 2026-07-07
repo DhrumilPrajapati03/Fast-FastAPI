@@ -1,9 +1,9 @@
 from typing import Callable, Any
 
-routes: dict[str, Callable[[Any], Any]] = {}
+routes: dict[str, Callable[..., Any]] = {}
 
 def route(path: str):
-    def register_route(func):
+    def register_route(func: Callable[..., Any]):
         routes[path] = func
         return func
     return register_route
