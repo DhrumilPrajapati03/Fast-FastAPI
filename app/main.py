@@ -49,7 +49,7 @@ def get_latest_shipment()->dict[str, Any]:
     return shipments[id]
 
 @app.get("/shipment/{id}")
-def get_shipment(id:int|float)->dict[str, Any]:
+def get_shipment(id:int)->dict[str, Any]:
 
     if id not in shipments:
         return {"detail":"given id doen't exists!!"}
