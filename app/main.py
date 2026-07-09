@@ -48,9 +48,9 @@ def get_latest_shipment()->dict[str, Any]:
     id = max(shipments.keys())
     return shipments[id]
 
-@app.get("/shipment/{field}")
-def get_shipment_field(field: str, id: int) -> Any:
-    return shipments[id][field]
+# @app.get("/shipment/{field}")
+# def get_shipment_field(field: str, id: int) -> Any:
+#     return shipments[id][field]
 
 @app.get("/shipment/{id}")
 def get_shipment(id:int)->dict[str, Any]:
@@ -82,6 +82,33 @@ def submit_shipment(data: dict[str, Any])-> dict[str, int]:
     }
 
     return {"id": new_id}    
+
+# @app.put("/shipment")
+# def shipment_update(id: int, content:str, weight: float, status: str)-> dict[str, Any]:
+#     shipments[id] ={
+#         "content": content,
+#         "weight" : weight,
+#         "status": status
+#     }
+#     return shipments[id]
+
+@ app.patch("/shipment")
+def patch_shipment(id: int,body:dict[str, Any]):#id: int, content: str | None= None, weight: float| None= None, status: str|None= None):
+    shipment = shipments[id]
+    # if content:
+    #     shipment["content"] = content
+    # if weight:
+    #     shipment["weight"] = weight
+    # if status:
+    #     shipment["status"] = status
+    shipment.update(body)
+    shipments[id] = shipment
+    return shipment
+
+@app.delete("/shipment")
+def delete_shipment(id: int)-> dict[str, str]:
+    shipments.pop(id)
+    return {"detail": f"shipment with id #{id} is deleted!"}
 # @app.get("/shipment/latest")
 # def get_latest_shipment()->dict[str, Any]:
 #     return{
