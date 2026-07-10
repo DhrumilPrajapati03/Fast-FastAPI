@@ -140,7 +140,7 @@ from fastapi import FastAPI, HTTPException, status
 from scalar_fastapi import get_scalar_api_reference
 
 from .schemas import ShipmentCreate, ShipmentRead, ShipmentUpdate
-
+from .database import shipments, save
 
 app = FastAPI()
 
@@ -175,6 +175,7 @@ def submit_shipment(shipment: ShipmentCreate) -> dict[str, int]:
     # Add to shipments dict
     shipments[new_id] = {
         **shipment.model_dump(),
+        "id": new_id,
         "status": "placed",
     }
     # Return id for later use
@@ -186,6 +187,7 @@ def submit_shipment(shipment: ShipmentCreate) -> dict[str, int]:
 def update_shipment(id: int, body: ShipmentUpdate):
     # Update data with given fields
     shipments[id].update(body.model_dump(exclude_none=True))
+    save()
     return shipments[id]
 
 
